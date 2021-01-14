@@ -1,0 +1,58 @@
+service: cognito-poc
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+# iamRoleStatements:
+#   - Effect: "Allow"
+#     Action:
+#       - "s3:ListBucket"
+#     Resource:
+#       {
+#         "Fn::Join":
+#           ["", ["arn:aws:s3:::", { "Ref": "ServerlessDeploymentBucket" }]],
+#       }
+#   - Effect: "Allow"
+#     Action:
+#       - "s3:PutObject"
+#     Resource:
+#       Fn::Join:
+#         - ""
+#         - - "arn:aws:s3:::"
+#           - "Ref": "ServerlessDeploymentBucket"
+#           - "/*"
+
+functions:
+  create-user:
+    handler: src/create-user.createUserHandler
+    events:
+      - http:
+          path: signup
+          method: post
+
+  login-user:
+    handler: src/login-user.loginUserHandler
+    events:
+      - http:
+          path: login
+          method: post
+
+  test-signup:
+    handler: src/test-signup.testSignupHandler
+    events:
+      - http:
+          path: test
+          method: post
+          authorizer:
+            arn: arn:aws:cognito-idp:us-east-1:846903748497:userpool/us-east-1_sGlruZDQk
