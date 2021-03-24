@@ -14,25 +14,6 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
 
-# iamRoleStatements:
-#   - Effect: "Allow"
-#     Action:
-#       - "s3:ListBucket"
-#     Resource:
-#       {
-#         "Fn::Join":
-#           ["", ["arn:aws:s3:::", { "Ref": "ServerlessDeploymentBucket" }]],
-#       }
-#   - Effect: "Allow"
-#     Action:
-#       - "s3:PutObject"
-#     Resource:
-#       Fn::Join:
-#         - ""
-#         - - "arn:aws:s3:::"
-#           - "Ref": "ServerlessDeploymentBucket"
-#           - "/*"
-
 functions:
   create-user:
     handler: src/create-user.createUserHandler
@@ -55,4 +36,4 @@ functions:
           path: test
           method: post
           authorizer:
-            arn: arn:aws:cognito-idp:us-east-1:846903748497:userpool/us-east-1_sGlruZDQk
+            arn: # YOUR COGNITO USER POOL ARN HERE
